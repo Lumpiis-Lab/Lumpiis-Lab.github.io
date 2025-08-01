@@ -244,6 +244,15 @@ article { display: none; }
     font-weight: var(--fw500);
     letter-spacing: -0.25px;
     margin-bottom: 10px;
+    /* Dezenter Neon-Gradient-Effekt */
+    background: linear-gradient(90deg, #00eaff 0%, #2196f3 50%, #00eaff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    text-shadow:
+        0 0 4px #00eaff88,
+        0 0 8px #2196f388;
 }
 
 .info-content .title {
@@ -340,9 +349,19 @@ article { display: none; }
 .social-item .social-link {
     color: var(--light-gray70);
     font-size: 18px;
+    transition: color 0.2s;
 }
 
-    .social-item .social-link:hover { color: var(--light-gray); }
+/* Individuelle Hover-Farben für Social-Icons */
+.social-item .social-link[href*="discord.gg"]:hover {
+    color: #5865F2; /* Discord Blau */
+}
+.social-item .social-link[href*="github.com"]:hover {
+    color: #fff; /* Weiß für GitHub */
+}
+.social-item .social-link[href*="twitch.tv"]:hover {
+    color: #9147ff; /* Twitch Lila */
+}
 
 /*NAVBAR*/
 
@@ -1482,4 +1501,31 @@ textarea.form-input {
 body > *:not(#particles-bg) {
     position: relative;
     z-index: 1;
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--white2);
+    font-size: var(--fs7);
+    transition: color 0.2s;
+}
+
+.contact-link ion-icon {
+    color: var(--blue-crayola);
+    font-size: 1em;
+    margin-left: 4px;
+    vertical-align: middle;
+    transition: color 0.2s;
+}
+
+.contact-link:hover,
+.contact-link:focus {
+    color: var(--blue-crayola);
+}
+
+.contact-link:hover ion-icon,
+.contact-link:focus ion-icon {
+    color: #2196f3;
 }

@@ -1,25 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
  
 :root {  
-    --bg-gradient-onyx: linear-gradient(to bottom right, hsl(240, 1%, 25%) 3%, hsl(0, 0%, 19%) 97%);
-    --bg-gradient-jet: linear-gradient(to bottom right, hsla(240, 1%, 18%, .251) 3%, hsla(240, 2%, 11%, 0) 100%), hsl(240, 2%, 13%);
-    --bg-gradient-blue1: linear-gradient(to bottom right, hsl(220, 100%, 71%) 0%, hsla(210, 100%, 69%, 0) 50%);
-    --bg-gradient-blue2: linear-gradient(135deg, hsla(220, 100%, 71%, .251) 0%, hsla(210, 100%, 68%, 0) 59.86%), hsl(240, 2%, 13%);
-    --border-gradient-onyx: linear-gradient(to bottom right, hsl(0, 0%, 25%) 0%, hsla(0, 0%, 25%, 0) 50%);
-    --text-gradient-blue: linear-gradient(to right, hsl(220, 100%, 72%), hsl(210, 100%, 68%));
+    /* Farbpalette aktualisiert: Violet - Cyan - Coral */
+    --bg-gradient-onyx: linear-gradient(to bottom right, hsl(260, 18%, 18%) 3%, hsl(250, 12%, 12%) 97%);
+    --bg-gradient-jet: linear-gradient(to bottom right, hsla(260, 18%, 15%, .25) 3%, hsla(250, 12%, 10%, 0) 100%), hsl(250, 12%, 10%);
+    --bg-gradient-blue1: linear-gradient(to bottom right, #7C3AED 0%, rgba(6,182,212,0.0) 50%);
+    --bg-gradient-blue2: linear-gradient(135deg, rgba(124,58,237, .25) 0%, rgba(6,182,212,0) 59.86%), hsl(250, 12%, 10%);
+    --border-gradient-onyx: linear-gradient(to bottom right, hsl(250, 12%, 18%) 0%, hsla(250, 12%, 18%, 0) 50%);
+    --text-gradient-blue: linear-gradient(to right, #7C3AED, #06B6D4);
 
-    --jet: hsl(0, 0%, 22%);
-    --onyx: hsl(240, 1%, 17%);
-    --eerie-black1: hsl(240, 2%, 13%);
-    --eerie-black2: hsl(240, 2%, 12%);
-    --smoky-black: hsl(0, 0%, 7%);
+    --jet: hsl(250, 12%, 16%);
+    --onyx: hsl(250, 12%, 14%);
+    --eerie-black1: hsl(250, 12%, 11%);
+    --eerie-black2: hsl(250, 12%, 10%);
+    --smoky-black: hsl(250, 12%, 6%);
     --white1: hsl(0, 0%, 100%);
     --white2: hsl(0, 0%, 98%);
-    --blue-crayola: hsl(220, 100%, 72%);
-    --blue-gold: hsl(220, 54%, 58%);
+    --blue-crayola: #06B6D4; /* Accent Cyan */
+    --blue-gold: #8B5CF6; /* Accent Violet */
     --light-gray: hsl(0, 0%, 84%);
     --light-gray70: hsla(0, 0%, 84%, .7);
-    --bittersweet-shimmer: hsl(0, 43%, 51%);
+    --bittersweet-shimmer: #FF6B6B; /* coral for invalid / warnings */
 
     --ff-poppins: 'Poppins', sans-serif;
 

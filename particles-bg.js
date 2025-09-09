@@ -16,14 +16,25 @@ function randomBetween(a, b) {
 }
 
 function createParticle() {
+    // Farbpalette: cyan, light-blue, violet, pink, coral (RGB)
+    const palette = [
+        '6,182,212',   // cyan
+        '33,150,243',  // light blue
+        '124,58,237',  // violet
+        '236,72,153',  // pink
+        '255,111,111'  // coral
+    ];
+
+    const rgb = palette[Math.floor(Math.random() * palette.length)];
+
     return {
         x: randomBetween(0, canvas.width),
         y: canvas.height + randomBetween(0, canvas.height / 4),
-        radius: randomBetween(1, 3),
-        speed: randomBetween(0.5, 2),
-        alpha: randomBetween(0.2, 0.7),
-        drift: randomBetween(-0.3, 0.3),
-        color: `rgba(33,150,243,${randomBetween(0.2,0.5)})`
+        radius: randomBetween(1, 3.5),
+        speed: randomBetween(0.4, 2.2),
+        alpha: randomBetween(0.15, 0.8),
+        drift: randomBetween(-0.4, 0.4),
+        color: `rgb(${rgb})`
     };
 }
 

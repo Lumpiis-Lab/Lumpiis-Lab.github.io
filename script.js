@@ -1,5 +1,3 @@
-// Projekte hier eintragen
-// image: optional; githubZip wird erzeugt, wenn github gesetzt ist
 const PROJECTS = [
   {
     id: 'financial-planner',
@@ -53,7 +51,6 @@ const PROJECTS = [
   }
 ];
 
-// Neue Links für den Slider (Discord x2, GitHub x2, FiveM, Twitch, YouTube, Instagram)
 const WORK_LINKS = [
   { id: 'discord-1', title: 'Lumpii´s Forge', url: 'https://discord.gg/5gKAtJFUD9', type: 'discord', icon: 'fab fa-discord' },
   { id: 'discord-2', title: 'ScubeScripts', url: 'https://discord.gg/Mqgewse3Yc', type: 'discord', icon: 'fab fa-discord' },
@@ -188,29 +185,23 @@ function renderWorkSlider(){
       </a>`;
   }).join('');
 
-  // Hover: bei Hover erhalten Items die Farbgebung der Plattform (inline styles, werden beim leave gelöscht)
   wrap.querySelectorAll('.ws-item').forEach(a=>{
     const icon = a.querySelector('.ws-icon');
     a.addEventListener('mouseenter', ()=>{
       const type = a.dataset.type || 'default';
       const style = PLATFORM_STYLES[type] || PLATFORM_STYLES.default;
-      // speichere ggf. original (falls nötig)
       a.dataset._origBg = a.style.background || '';
       a.dataset._origColor = a.style.color || '';
       icon.dataset._origBg = icon.style.background || '';
       icon.dataset._origColor = icon.style.color || '';
 
-      // setze Plattform-Farben
       a.style.background = style.bg;
       a.style.color = style.iconColor || '#fff';
-      // Icon-Box: leicht aufgehellt oder weiß-Overlay
       icon.style.background = style.iconBg || 'rgba(255,255,255,0.06)';
-      // Icon-Farbe (FontAwesome)
       const inner = icon.querySelector('i');
       if(inner) inner.style.color = style.iconColor || '#fff';
     });
     a.addEventListener('mouseleave', ()=>{
-      // restore (einfach entfernen, CSS-Klassen bestimmen wieder das Erscheinungsbild)
       a.style.background = a.dataset._origBg || '';
       a.style.color = a.dataset._origColor || '';
       icon.style.background = icon.dataset._origBg || '';
@@ -221,9 +212,6 @@ function renderWorkSlider(){
     });
   });
 
-  // Simple click handled by anchor default behaviour (opens link)
-
-  // Make draggable
   makeHorizontalDraggable(wrap);
 }
 
@@ -246,7 +234,6 @@ function makeHorizontalDraggable(el){
     el.scrollLeft = scrollLeft - walk;
   });
 
-  // touch
   let touchStartX=0, touchScrollLeft=0;
   el.addEventListener('touchstart', (e)=>{
     touchStartX = e.touches[0].pageX - el.offsetLeft;
@@ -259,7 +246,6 @@ function makeHorizontalDraggable(el){
   }, {passive:true});
 }
 
-// Prev/Next Buttons
 function initWorkSliderControls(){
   const container = document.getElementById('workSlider');
   const prev = document.getElementById('wsPrev');
@@ -278,7 +264,6 @@ function init(){
   initFilters();
   applyFilters();
 
-  // Neue Slider-Initialisierung
   renderWorkSlider();
   initWorkSliderControls();
 }

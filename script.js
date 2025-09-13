@@ -53,6 +53,18 @@ const PROJECTS = [
   }
 ];
 
+// Neue Links für den Slider (Discord x2, GitHub x2, FiveM, Twitch, YouTube, Instagram)
+const WORK_LINKS = [
+  { id: 'discord-1', title: 'Lumpii´s Forge', url: 'https://discord.gg/5gKAtJFUD9', type: 'discord', icon: 'fab fa-discord' },
+  { id: 'discord-2', title: 'ScubeScripts', url: 'https://discord.gg/Mqgewse3Yc', type: 'discord', icon: 'fab fa-discord' },
+  { id: 'github-1', title: 'Lumpii404', url: 'https://github.com/Lumpii404', type: 'github', icon: 'fab fa-github' },
+  { id: 'github-2', title: 'ScubeScripts', url: 'https://github.com/ScubeScripts', type: 'github', icon: 'fab fa-github' },
+  { id: 'fivem', title: 'ScubeScripts', url: 'https://forum.cfx.re/u/scubescripts/summary', type: 'fivem', icon: 'fas fa-car' },
+  { id: 'twitch', title: 'lumpii_tv', url: 'https://twitch.tv/lumpii_tv', type: 'twitch', icon: 'fab fa-twitch' },
+  { id: 'youtube', title: 'lumpii_tv', url: 'https://www.youtube.com/@lumpii_tv', type: 'youtube', icon: 'fab fa-youtube' },
+  { id: 'instagram', title: 'lumpii_tv', url: 'https://instagram.com/lumpii_tv', type: 'instagram', icon: 'fab fa-instagram' }
+];
+
 const $ = s => document.querySelector(s);
 const grid = $('#grid');
 const empty = $('#empty');
@@ -150,6 +162,114 @@ function initFilters(){
   }
 }
 
+const PLATFORM_STYLES = {
+  discord:  { bg: '#5865F2',                iconBg: 'rgba(255,255,255,0.06)',  iconColor: '#fff' },
+  github:   { bg: '#181717',                iconBg: 'rgba(255,255,255,0.06)',  iconColor: '#fff' },
+  twitch:   { bg: '#9147FF',                iconBg: 'rgba(255,255,255,0.06)',  iconColor: '#fff' },
+  youtube:  { bg: '#FF0000',                iconBg: 'rgba(255,255,255,0.06)',  iconColor: '#fff' },
+  instagram:{ bg: 'linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)', iconBg: 'rgba(255,255,255,0.06)', iconColor: '#fff' },
+  fivem:    { bg: 'linear-gradient(45deg,#ff9a2e,#ff7a18)', iconBg: 'rgba(255,255,255,0.08)', iconColor: '#ffffff' },
+  default:  { bg: 'linear-gradient(90deg,#4c65ff,#f062c0)', iconBg: 'rgba(255,255,255,0.06)', iconColor: '#fff' }
+};
+
+function renderWorkSlider(){
+  const wrap = document.getElementById('workSlider');
+  if(!wrap) return;
+  wrap.innerHTML = WORK_LINKS.map(l => {
+    return `
+      <a href="${l.url}" target="_blank" rel="noopener" data-id="${l.id}" data-type="${l.type}" class="ws-item inline-flex flex-shrink-0 w-56 md:w-64 rounded-2xl border border-white/10 bg-white/5 transition-colors p-4 gap-3 items-center" aria-label="${l.title}">
+        <div class="size-12 rounded-xl flex-shrink-0 flex items-center justify-center text-neutral-200 bg-base-800/30 border border-white/5 ws-icon">
+          <i class="${l.icon}"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm font-semibold truncate">${l.title}</div>
+          <div class="text-xs text-neutral-400 truncate">${l.type.toUpperCase()}</div>
+        </div>
+      </a>`;
+  }).join('');
+
+  // Hover: bei Hover erhalten Items die Farbgebung der Plattform (inline styles, werden beim leave gelöscht)
+  wrap.querySelectorAll('.ws-item').forEach(a=>{
+    const icon = a.querySelector('.ws-icon');
+    a.addEventListener('mouseenter', ()=>{
+      const type = a.dataset.type || 'default';
+      const style = PLATFORM_STYLES[type] || PLATFORM_STYLES.default;
+      // speichere ggf. original (falls nötig)
+      a.dataset._origBg = a.style.background || '';
+      a.dataset._origColor = a.style.color || '';
+      icon.dataset._origBg = icon.style.background || '';
+      icon.dataset._origColor = icon.style.color || '';
+
+      // setze Plattform-Farben
+      a.style.background = style.bg;
+      a.style.color = style.iconColor || '#fff';
+      // Icon-Box: leicht aufgehellt oder weiß-Overlay
+      icon.style.background = style.iconBg || 'rgba(255,255,255,0.06)';
+      // Icon-Farbe (FontAwesome)
+      const inner = icon.querySelector('i');
+      if(inner) inner.style.color = style.iconColor || '#fff';
+    });
+    a.addEventListener('mouseleave', ()=>{
+      // restore (einfach entfernen, CSS-Klassen bestimmen wieder das Erscheinungsbild)
+      a.style.background = a.dataset._origBg || '';
+      a.style.color = a.dataset._origColor || '';
+      icon.style.background = icon.dataset._origBg || '';
+      const inner = icon.querySelector('i');
+      if(inner) inner.style.color = icon.dataset._origColor || '';
+      delete a.dataset._origBg; delete a.dataset._origColor;
+      delete icon.dataset._origBg; delete icon.dataset._origColor;
+    });
+  });
+
+  // Simple click handled by anchor default behaviour (opens link)
+
+  // Make draggable
+  makeHorizontalDraggable(wrap);
+}
+
+function makeHorizontalDraggable(el){
+  let isDown=false, startX, scrollLeft;
+  el.style.scrollBehavior = 'auto';
+  el.addEventListener('mousedown', (e)=>{
+    isDown = true;
+    el.classList.add('cursor-grabbing');
+    startX = e.pageX - el.offsetLeft;
+    scrollLeft = el.scrollLeft;
+  });
+  window.addEventListener('mouseup', ()=>{ isDown=false; el.classList.remove('cursor-grabbing'); });
+  el.addEventListener('mouseleave', ()=>{ isDown=false; el.classList.remove('cursor-grabbing'); });
+  el.addEventListener('mousemove', (e)=>{
+    if(!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - el.offsetLeft;
+    const walk = (x - startX) * 1.2;
+    el.scrollLeft = scrollLeft - walk;
+  });
+
+  // touch
+  let touchStartX=0, touchScrollLeft=0;
+  el.addEventListener('touchstart', (e)=>{
+    touchStartX = e.touches[0].pageX - el.offsetLeft;
+    touchScrollLeft = el.scrollLeft;
+  }, {passive:true});
+  el.addEventListener('touchmove', (e)=>{
+    const x = e.touches[0].pageX - el.offsetLeft;
+    const walk = (x - touchStartX) * 1.2;
+    el.scrollLeft = touchScrollLeft - walk;
+  }, {passive:true});
+}
+
+// Prev/Next Buttons
+function initWorkSliderControls(){
+  const container = document.getElementById('workSlider');
+  const prev = document.getElementById('wsPrev');
+  const next = document.getElementById('wsNext');
+  if(!container) return;
+  const step = container.clientWidth * 0.8;
+  prev && prev.addEventListener('click', ()=> container.scrollBy({ left: -step, behavior: 'smooth' }));
+  next && next.addEventListener('click', ()=> container.scrollBy({ left: step, behavior: 'smooth' }));
+}
+
 function init(){
   $('#y').textContent = new Date().getFullYear();
   $('#menuBtn').addEventListener('click', ()=> $('#mobileNav').classList.toggle('hidden'));
@@ -157,6 +277,10 @@ function init(){
   $('#sort').addEventListener('change', applyFilters);
   initFilters();
   applyFilters();
+
+  // Neue Slider-Initialisierung
+  renderWorkSlider();
+  initWorkSliderControls();
 }
 
 document.addEventListener('DOMContentLoaded', init);

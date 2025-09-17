@@ -6,7 +6,7 @@ const PROJECTS = [
     tags: ['ui', 'web', 'tool'],
     updatedAt: '2025-09-14',
     github: '',
-    demo: '',
+    demo: 'https://sites.google.com/view/crypto-tool-demo/home',
     image: 'img/crypto.png'
   },
   {

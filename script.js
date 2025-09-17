@@ -1,5 +1,15 @@
 const PROJECTS = [
   {
+    id: 'crypto-tool',
+    title: 'Krypto-Tool',
+    description: 'Ein einfaches Tool zur Verschlüsselung und Entschlüsselung von Text.',
+    tags: ['ui', 'web', 'tool'],
+    updatedAt: '2025-09-14',
+    github: '',
+    demo: '',
+    image: 'img/crypto.png'
+  },
+  {
     id: 'financial-planner',
     title: 'Finanz-Planer',
     description: 'Simpler Finanz-Planer um deine Ein- und Ausgaben zu verwalten.',

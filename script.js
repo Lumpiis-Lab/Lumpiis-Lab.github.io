@@ -266,6 +266,50 @@ function initWorkSliderControls(){
   next && next.addEventListener('click', ()=> container.scrollBy({ left: step, behavior: 'smooth' }));
 }
 
+function initTestimonialLinks(){
+  const TESTIMONIAL_LINKS = {
+    'dracocat': 'https://twitch.tv/dracocat',
+    'shiroo_neko_': 'https://twitch.tv/shiroo_neko_',
+    'flamerbox': 'https://twitch.tv/flamerbox'
+  };
+
+  function normalizeName(n){
+    return (n || '').trim().toLowerCase().replace(/\s+/g,'').replace(/[^a-z0-9_]/gi,'');
+  }
+
+  document.querySelectorAll('#testimonials .p-6').forEach(container => {
+    const nameEl = container.querySelector('.font-semibold');
+    if(!nameEl) return;
+
+    const displayName = nameEl.textContent.trim();
+    if(!displayName) return;
+
+    const key = normalizeName(displayName);
+    const url = TESTIMONIAL_LINKS[key];
+    if(!url) return;
+
+    if(nameEl.querySelector('a')) return;
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.title = displayName;
+    a.className = 'hover:underline text-neutral-200';
+    a.textContent = displayName;
+
+    if(document.querySelector('.fab.fa-twitch')){
+      const icon = document.createElement('i');
+      icon.className = 'fab fa-twitch ml-2 text-sm';
+      icon.style.marginLeft = '0.5rem';
+      a.appendChild(icon);
+    }
+
+    nameEl.textContent = '';
+    nameEl.appendChild(a);
+  });
+}
+
 function init(){
   $('#y').textContent = new Date().getFullYear();
   $('#menuBtn').addEventListener('click', ()=> $('#mobileNav').classList.toggle('hidden'));
@@ -276,6 +320,8 @@ function init(){
 
   renderWorkSlider();
   initWorkSliderControls();
+
+  initTestimonialLinks();
 }
 
 document.addEventListener('DOMContentLoaded', init);

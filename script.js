@@ -1,5 +1,15 @@
 const PROJECTS = [
   {
+    id: 'live-editor',
+    title: 'Network.eco Live-Editor',
+    description: 'Ein einfaches Tool zum Bearbeiten von Network.eco Dateien',
+    tags: ['ui', 'web', 'tool'],
+    updatedAt: '2025-12-02',
+    github: '',
+    demo: 'https://sites.google.com/view/lumpiis-live-editor/home',
+    image: 'img/eco.png'
+  },
+  {
     id: 'crypto-tool',
     title: 'Krypto-Tool',
     description: 'Ein einfaches Tool zur Verschlüsselung und Entschlüsselung von Text.',

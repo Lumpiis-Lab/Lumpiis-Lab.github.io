@@ -72,7 +72,7 @@ const PROJECTS = [
 ];
 
 const WORK_LINKS = [
-  { id: 'discord-1', title: 'Lumpii´s Forge', url: 'https://discord.gg/5gKAtJFUD9', type: 'discord', icon: 'fab fa-discord' },
+  { id: 'discord-1', title: 'Lumpii´s Lab', url: 'https://discord.gg/5gKAtJFUD9', type: 'discord', icon: 'fab fa-discord' },
   { id: 'discord-2', title: 'ScubeScripts', url: 'https://discord.gg/Mqgewse3Yc', type: 'discord', icon: 'fab fa-discord' },
   { id: 'github-1', title: 'Lumpii404', url: 'https://github.com/Lumpii404', type: 'github', icon: 'fab fa-github' },
   { id: 'github-2', title: 'ScubeScripts', url: 'https://github.com/ScubeScripts', type: 'github', icon: 'fab fa-github' },

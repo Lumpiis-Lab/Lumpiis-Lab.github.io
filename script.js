@@ -74,12 +74,12 @@ const PROJECTS = [
 const WORK_LINKS = [
   { id: 'discord-1', title: 'Lumpii´s Lab', url: 'https://discord.gg/5gKAtJFUD9', type: 'discord', icon: 'fab fa-discord' },
   { id: 'discord-2', title: 'ScubeScripts', url: 'https://discord.gg/Mqgewse3Yc', type: 'discord', icon: 'fab fa-discord' },
-  { id: 'github-1', title: 'lumpiis-lab', url: 'https://github.com/lumpiis-lab', type: 'github', icon: 'fab fa-github' },
+  { id: 'github-1', title: 'Lumpiis-Lab', url: 'https://github.com/lumpiis-lab', type: 'github', icon: 'fab fa-github' },
   { id: 'github-2', title: 'ScubeScripts', url: 'https://github.com/ScubeScripts', type: 'github', icon: 'fab fa-github' },
   { id: 'fivem', title: 'ScubeScripts', url: 'https://forum.cfx.re/u/scubescripts/summary', type: 'fivem', icon: 'fas fa-car' },
-  { id: 'twitch', title: 'lumpii_tv', url: 'https://twitch.tv/lumpii_tv', type: 'twitch', icon: 'fab fa-twitch' },
-  { id: 'youtube', title: 'lumpii_tv', url: 'https://www.youtube.com/@lumpii_tv', type: 'youtube', icon: 'fab fa-youtube' },
-  { id: 'instagram', title: 'lumpii_tv', url: 'https://instagram.com/lumpii_tv', type: 'instagram', icon: 'fab fa-instagram' }
+  { id: 'twitch', title: 'Lumpii_TV', url: 'https://twitch.tv/lumpii_tv', type: 'twitch', icon: 'fab fa-twitch' },
+  { id: 'youtube', title: 'Lumpii_TV', url: 'https://www.youtube.com/@lumpii_tv', type: 'youtube', icon: 'fab fa-youtube' },
+  { id: 'instagram', title: 'Lumpii_TV', url: 'https://instagram.com/lumpii_tv', type: 'instagram', icon: 'fab fa-instagram' }
 ];
 
 const $ = s => document.querySelector(s);

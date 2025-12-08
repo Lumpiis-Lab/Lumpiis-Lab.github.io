@@ -74,7 +74,7 @@ const PROJECTS = [
 const WORK_LINKS = [
   { id: 'discord-1', title: 'Lumpii´s Lab', url: 'https://discord.gg/5gKAtJFUD9', type: 'discord', icon: 'fab fa-discord' },
   { id: 'discord-2', title: 'ScubeScripts', url: 'https://discord.gg/Mqgewse3Yc', type: 'discord', icon: 'fab fa-discord' },
-  { id: 'github-1', title: 'Lumpii404', url: 'https://github.com/Lumpii404', type: 'github', icon: 'fab fa-github' },
+  { id: 'github-1', title: 'lumpiis-lab', url: 'https://github.com/lumpiis-lab', type: 'github', icon: 'fab fa-github' },
   { id: 'github-2', title: 'ScubeScripts', url: 'https://github.com/ScubeScripts', type: 'github', icon: 'fab fa-github' },
   { id: 'fivem', title: 'ScubeScripts', url: 'https://forum.cfx.re/u/scubescripts/summary', type: 'fivem', icon: 'fas fa-car' },
   { id: 'twitch', title: 'lumpii_tv', url: 'https://twitch.tv/lumpii_tv', type: 'twitch', icon: 'fab fa-twitch' },

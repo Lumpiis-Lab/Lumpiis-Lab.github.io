@@ -1,5 +1,15 @@
 const PROJECTS = [
   {
+    id: 'pinboard',
+    title: 'Pinboard',
+    description: 'Eine einfache Webanwendung zum Speichern und Verwalten von Notizen.',
+    tags: ['web', 'tool'],
+    updatedAt: '2025-12-18',
+    github: 'https://github.com/Lumpiis-Lab/Pinboard',
+    demo: '',
+    image: 'img/pinboard.png'
+  },
+  {
     id: 'live-editor',
     title: 'Network.eco Live-Editor',
     description: 'Ein einfaches Tool zum Bearbeiten von Network.eco Dateien',
@@ -15,7 +25,7 @@ const PROJECTS = [
     description: 'Ein einfaches Tool zur Verschlüsselung und Entschlüsselung von Text.',
     tags: ['ui', 'web', 'tool'],
     updatedAt: '2025-09-14',
-    github: '',
+    github: 'https://github.com/Lumpiis-Lab/Crypto-Tool',
     demo: 'https://sites.google.com/view/crypto-tool-demo/home',
     image: 'img/crypto.png'
   },
@@ -25,7 +35,7 @@ const PROJECTS = [
     description: 'Simpler Finanz-Planer um deine Ein- und Ausgaben zu verwalten.',
     tags: ['ui', 'web'],
     updatedAt: '2025-08-19',
-    github: '',
+    github: 'https://github.com/Lumpiis-Lab/Finanzplaner-Tool',
     demo: '',
     image: 'img/Finances.png'
   },
@@ -55,7 +65,7 @@ const PROJECTS = [
     description: ' Eine Anwendung zur Verwaltung von Lagerbeständen.',
     tags: ['ui', 'web', 'tool'],
     updatedAt: '2025-07-15',
-    github: '',
+    github: 'https://github.com/Lumpiis-Lab/Lagerverwaltung-Tool',
     demo: '',
     image: 'img/lager.png'
   },

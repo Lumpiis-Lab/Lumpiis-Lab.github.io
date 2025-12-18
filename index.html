@@ -173,12 +173,44 @@
         Design – immer mit Blick auf die beste User- und Developer-Experience. 
         Neben eigenen Tools teile ich vieles als Open Source und baue aktiv an Community-Projekten.
       </p>
-      <ul class="mt-6 grid sm:grid-cols-2 gap-3 text-sm text-neutral-300">
-        <li class="flex items-center gap-2"><span class="size-1.5 rounded-full bg-brand-600"></span>Darkmode-Designs</li>
-        <li class="flex items-center gap-2"><span class="size-1.5 rounded-full bg-brand-600"></span>HTML, JS & Tailwind</li>
-        <li class="flex items-center gap-2"><span class="size-1.5 rounded-full bg-brand-600"></span>Saubere & strukturierte Codebases</li>
-        <li class="flex items-center gap-2"><span class="size-1.5 rounded-full bg-brand-600"></span>Open Source & Community Based</li>
-      </ul>
+      <div class="mt-6 grid sm:grid-cols-2 gap-3 text-sm text-neutral-300">
+        <div class="mb-4">
+          <div class="flex justify-between mb-1">
+            <span>UI & Tools</span>
+            <span>85%</span>
+          </div>
+          <div class="w-full bg-base-700 rounded-full h-2">
+            <div class="bg-brand-600 h-2 rounded-full" style="width: 85%"></div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="flex justify-between mb-1">
+            <span>HTML, JS & Tailwind</span>
+            <span>90%</span>
+          </div>
+          <div class="w-full bg-base-700 rounded-full h-2">
+            <div class="bg-brand-600 h-2 rounded-full" style="width: 90%"></div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="flex justify-between mb-1">
+            <span>Lua</span>
+            <span>95%</span>
+          </div>
+          <div class="w-full bg-base-700 rounded-full h-2">
+            <div class="bg-brand-600 h-2 rounded-full" style="width: 95%"></div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="flex justify-between mb-1">
+            <span>Python</span>
+            <span>90%</span>
+          </div>
+          <div class="w-full bg-base-700 rounded-full h-2">
+            <div class="bg-brand-600 h-2 rounded-full" style="width: 90%"></div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="bg-base-800/60 border border-white/10 rounded-2xl p-5">
       <h3 class="font-semibold mb-2">Quick Links</h3>
@@ -228,16 +260,8 @@
   </section>
 
   <section id="work-slider" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 border-t border-white/5">
-    <div class="flex items-center justify-between mb-4">
+    <div class="mb-4">
       <h2 class="text-2xl font-bold">Noch mehr von mir:</h2>
-      <div class="flex items-center gap-2">
-        <button id="wsPrev" aria-label="Zurück" class="p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10">
-          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18 9 12l6-6"/></svg>
-        </button>
-        <button id="wsNext" aria-label="Weiter" class="p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10">
-          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
-        </button>
-      </div>
     </div>
 
     <div id="workSliderWrap" class="relative">
@@ -293,7 +317,7 @@
           <img src="img/neverland.png" alt="Neverland Profilbild" class="size-10 rounded-full object-cover bg-base-700 border border-white/10">
           <div>
             <div class="font-semibold">Neverland</div>
-            <div class="text-sm text-neutral-500">Community</div>
+            <div class="text-sm text-neutral-500">Minecraft-Community</div>
           </div>
         </div>
       </div>
@@ -327,6 +351,19 @@
     </div>
   </footer>
 
+  <script>
+    // Automatic endless scrolling for work slider
+    const workSlider = document.getElementById('workSlider');
+    if (workSlider) {
+      setInterval(() => {
+        if (workSlider.scrollLeft >= workSlider.scrollWidth - workSlider.clientWidth) {
+          workSlider.scrollLeft = 0; // Reset to start for endless loop
+        } else {
+          workSlider.scrollLeft += 1; // Slow scroll by 1px
+        }
+      }, 50); // Adjust interval for speed (lower = faster)
+    }
+  </script>
   <script src="script.js"></script>
  </body>
 </html>

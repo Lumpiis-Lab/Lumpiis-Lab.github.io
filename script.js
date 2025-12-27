@@ -289,7 +289,7 @@ function initWorkSliderControls(){
 function initTestimonialLinks(){
   const TESTIMONIAL_LINKS = {
     'dracocat': 'https://twitch.tv/dracocat',
-    'shiroo_neko_': 'https://twitch.tv/shiroo_neko_',
+    'shirotastisch': 'https://twitch.tv/shirotastisch',
     'flamerbox': 'https://twitch.tv/flamerbox'
   };
 

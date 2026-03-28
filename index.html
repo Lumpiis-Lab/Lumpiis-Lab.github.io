@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>L̉͛̐um̉͂ͨp̩ͮi͊̋̑i's Lab</title>
+  <title>Lumpii's Lab</title>
   <meta name="description" content="Portfolio & Blog von Lumpii. Moderne Webdesigns, Tools und Open-Source Projekte mit GitHub-Downloads.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -16,23 +16,27 @@
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
-          boxShadow: {
-            glow: '0 0 0 1px rgba(255,255,255,0.08), 0 10px 30px rgba(0,0,0,0.65)'
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
           },
           colors: {
-            base: {
-              900: '#0a0a0b',
-              800: '#0f1012',
-              700: '#14161a',
-              600: '#1c1f25',
-              500: '#242934',
+            editor: {
+              bg:       '#0d1117',
+              surface:  '#161b22',
+              panel:    '#1c2128',
+              border:   '#30363d',
+              hover:    '#21262d',
             },
-            brand: {
-              400: '#7c9aff',
-              500: '#6a86ff',
-              600: '#4c65ff',
-              700: '#3a4ddb',
+            syntax: {
+              green:    '#3fb950',
+              cyan:     '#58a6ff',
+              orange:   '#d29922',
+              pink:     '#f778ba',
+              purple:   '#bc8cff',
+              red:      '#ff7b72',
+              comment:  '#8b949e',
+              text:     '#c9d1d9',
             }
           }
         }
@@ -41,217 +45,294 @@
   </script>
   <style>
     html { scroll-behavior: smooth; }
-    .no-scrollbar::-webkit-scrollbar{ display:none; } .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
-    .discord-icon-link { color: #b9bbbe; }
-    .discord-icon-link:hover {
-      background: #5865F2 !important;
-      color: #fff !important;
+    body { background: #0d1117; }
+    .no-scrollbar::-webkit-scrollbar{ display:none; }
+    .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .cursor-blink::after {
+      content: '█';
+      animation: blink 1s step-end infinite;
+      color: #3fb950;
+      margin-left: 2px;
     }
-    .github-icon-link { color: #b9bbbe; }
-    .github-icon-link:hover { background: #181717 !important; color: #fff !important; }
-    .twitch-icon-link { color: #b9bbbe; }
-    .twitch-icon-link:hover { background: #9147FF !important; color: #fff !important; }
-    .img-hover-group:hover .img-zoom-icon,
-    .img-hover-group:focus-within .img-zoom-icon {
-      opacity: 1 !important;
+
+    @keyframes typing { from{max-width:0} to{max-width:100%} }
+    .typing-line {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 0;
+      animation: typing 2.5s steps(44,end) 0.5s forwards;
     }
-    .img-zoom-icon {
-      transition: opacity 0.2s;
+
+    .editor-card { position: relative; overflow: hidden; }
+    .editor-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, #3fb950 30%, #58a6ff 70%, transparent 100%);
       opacity: 0;
-      z-index: 2;
+      transition: opacity 0.35s;
     }
-    .img-hover-group img {
-      transition: filter 0.2s;
+    .editor-card:hover::before { opacity: 1; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0d1117; }
+    ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+
+    .img-hover-group:hover .img-zoom-icon { opacity: 1 !important; }
+    .img-zoom-icon { transition: opacity 0.2s; opacity: 0; z-index: 2; }
+    .img-hover-group img { transition: filter 0.3s, transform 0.3s; }
+    .img-hover-group:hover img { filter: brightness(0.55); transform: scale(1.03); }
+
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(56,189,248,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
     }
-    .img-hover-group:hover img,
-    .img-hover-group:focus-within img {
-      filter: brightness(0.7) blur(1px);
+
+    .skill-fill { transition: width 1.2s cubic-bezier(.22,.61,.36,1); width: 0; }
+    .skill-fill.animated { width: var(--w); }
+
+    .social-link { transition: all 0.2s ease; }
+    .social-link:hover { transform: translateY(-2px); }
+    .social-discord:hover { background: #5865F2 !important; color: #fff !important; border-color: #5865F2 !important; }
+    .social-github:hover { background: #f0f6fc !important; color: #0d1117 !important; border-color: #f0f6fc !important; }
+    .social-twitch:hover { background: #9147FF !important; color: #fff !important; border-color: #9147FF !important; }
+
+    .tag-btn.active {
+      background: #3fb950 !important;
+      color: #0d1117 !important;
+      border-color: #3fb950 !important;
+      font-weight: 600;
     }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    .fade-section { animation: fadeUp 0.6s ease-out both; }
+
+    .hover-lift { transition: transform 0.25s, box-shadow 0.25s; }
+    .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
   </style>
 </head>
-<body class="bg-base-900 text-neutral-200 selection:bg-brand-600/30">
-  <header class="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-base-900/60 bg-base-900/90 border-b border-white/5">
+<body class="text-syntax-text selection:bg-syntax-green/20 font-sans">
+
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-editor-bg/80 border-b border-editor-border">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="h-16 flex items-center justify-between">
-        <a href="#top" class="group inline-flex items-center gap-3">
+      <div class="h-14 flex items-center justify-between">
+        <a href="#top" class="group inline-flex items-center gap-2.5">
           <div>
-            <div class="text-lg font-semibold leading-5">L̉͛̐um̉͂ͨp̩ͮi͊̋̑i's Lab</div>
-            <div class="text-[11px] text-neutral-400 -mt-0.5">Scripts · Designs · Tools</div>
+            <div class="font-mono text-sm font-semibold text-syntax-text leading-4">Lumpii's<span class="text-syntax-green"> Lab</span></div>
+            <div class="text-[10px] text-syntax-comment font-mono">// code · tools · fivem</div>
           </div>
         </a>
-        <nav class="hidden md:flex items-center gap-2">
-          <a href="#projects" class="px-3 py-2 text-sm rounded-lg hover:bg-white/5">Projekte</a>
-          <a href="#about" class="px-3 py-2 text-sm rounded-lg hover:bg-white/5">Über</a>
-          <a href="#contact" class="px-3 py-2 text-sm rounded-lg hover:bg-white/5">Kontakt</a>
-          <a href="https://discord.gg/5gKAtJFUD9" target="_blank" rel="noopener" aria-label="Discord" class="ml-2 inline-flex items-center justify-center px-3 py-2 rounded-lg bg-white/5 border border-white/10 transition-colors discord-icon-link">
-            <i class="fab fa-discord"></i>
+
+        <nav class="hidden md:flex items-center gap-1">
+          <a href="#projects" class="px-3 py-1.5 text-sm font-mono text-syntax-comment rounded-md hover:text-syntax-text hover:bg-editor-hover transition-colors">projects</a>
+          <a href="#about" class="px-3 py-1.5 text-sm font-mono text-syntax-comment rounded-md hover:text-syntax-text hover:bg-editor-hover transition-colors">about</a>
+          <a href="#testimonials" class="px-3 py-1.5 text-sm font-mono text-syntax-comment rounded-md hover:text-syntax-text hover:bg-editor-hover transition-colors">reviews</a>
+          <a href="#contact" class="px-3 py-1.5 text-sm font-mono text-syntax-comment rounded-md hover:text-syntax-text hover:bg-editor-hover transition-colors">contact</a>
+          <div class="ml-3 h-5 w-px bg-editor-border"></div>
+          <a href="https://discord.gg/5gKAtJFUD9" target="_blank" rel="noopener" aria-label="Discord"
+             class="social-link social-discord ml-2 size-8 inline-flex items-center justify-center rounded-lg bg-editor-surface border border-editor-border text-syntax-comment">
+            <i class="fab fa-discord text-xs"></i>
           </a>
-          <a href="https://github.com/lumpiis-lab" target="_blank" rel="noopener" aria-label="GitHub" class="ml-2 inline-flex items-center justify-center px-3 py-2 rounded-lg bg-white/5 border border-white/10 transition-colors github-icon-link">
-            <i class="fab fa-github"></i>
+          <a href="https://github.com/lumpiis-lab" target="_blank" rel="noopener" aria-label="GitHub"
+             class="social-link social-github size-8 inline-flex items-center justify-center rounded-lg bg-editor-surface border border-editor-border text-syntax-comment">
+            <i class="fab fa-github text-xs"></i>
           </a>
-          <a href="https://twitch.tv/lumpii_tv" target="_blank" rel="noopener" aria-label="Twitch" class="ml-2 inline-flex items-center justify-center px-3 py-2 rounded-lg bg-white/5 border border-white/10 transition-colors twitch-icon-link">
-            <i class="fab fa-twitch"></i>
+          <a href="https://twitch.tv/lumpii_tv" target="_blank" rel="noopener" aria-label="Twitch"
+             class="social-link social-twitch size-8 inline-flex items-center justify-center rounded-lg bg-editor-surface border border-editor-border text-syntax-comment">
+            <i class="fab fa-twitch text-xs"></i>
           </a>
         </nav>
-        <button id="menuBtn" class="md:hidden p-2 rounded-lg hover:bg-white/5" aria-label="Menü öffnen">
-          <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+
+        <button id="menuBtn" class="md:hidden p-2 rounded-lg hover:bg-editor-hover text-syntax-comment" aria-label="Menü öffnen">
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
-      <div id="mobileNav" class="md:hidden hidden pb-3">
-        <a href="#projects" class="block px-3 py-2 text-sm rounded-lg hover:bg-white/5">Projekte</a>
-        <a href="#about" class="block px-3 py-2 text-sm rounded-lg hover:bg-white/5">Über</a>
-        <a href="#contact" class="block px-3 py-2 text-sm rounded-lg hover:bg-white/5">Kontakt</a>
+      <div id="mobileNav" class="md:hidden hidden pb-3 border-t border-editor-border pt-2 mt-1">
+        <a href="#projects" class="block px-3 py-2 text-sm font-mono text-syntax-comment rounded-lg hover:bg-editor-hover hover:text-syntax-text">projects</a>
+        <a href="#about" class="block px-3 py-2 text-sm font-mono text-syntax-comment rounded-lg hover:bg-editor-hover hover:text-syntax-text">about</a>
+        <a href="#testimonials" class="block px-3 py-2 text-sm font-mono text-syntax-comment rounded-lg hover:bg-editor-hover hover:text-syntax-text">reviews</a>
+        <a href="#contact" class="block px-3 py-2 text-sm font-mono text-syntax-comment rounded-lg hover:bg-editor-hover hover:text-syntax-text">contact</a>
+        <div class="flex gap-2 mt-3 px-3">
+          <a href="https://discord.gg/5gKAtJFUD9" target="_blank" rel="noopener" class="social-link social-discord size-9 inline-flex items-center justify-center rounded-lg bg-editor-surface border border-editor-border text-syntax-comment"><i class="fab fa-discord"></i></a>
+          <a href="https://github.com/lumpiis-lab" target="_blank" rel="noopener" class="social-link social-github size-9 inline-flex items-center justify-center rounded-lg bg-editor-surface border border-editor-border text-syntax-comment"><i class="fab fa-github"></i></a>
+          <a href="https://twitch.tv/lumpii_tv" target="_blank" rel="noopener" class="social-link social-twitch size-9 inline-flex items-center justify-center rounded-lg bg-editor-surface border border-editor-border text-syntax-comment"><i class="fab fa-twitch"></i></a>
+        </div>
       </div>
     </div>
   </header>
 
-  <section id="top" class="relative overflow-hidden">
-    <div class="absolute inset-0 -z-10 opacity-40 blur-3xl" aria-hidden="true">
-      <div class="absolute -top-24 -left-16 size-[520px] rounded-full bg-brand-600/30"></div>
-      <div class="absolute -bottom-24 -right-16 size-[520px] rounded-full bg-fuchsia-600/25"></div>
+  <section id="top" class="relative grid-bg overflow-hidden">
+    <div class="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+      <div class="absolute -top-32 -left-32 size-[500px] rounded-full bg-syntax-green/[0.07] blur-[100px]"></div>
+      <div class="absolute -bottom-32 -right-32 size-[500px] rounded-full bg-syntax-cyan/[0.06] blur-[100px]"></div>
     </div>
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-      <div class="max-w-3xl">
-        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
-          Scripts, Designs & Open-Source Projekte von <span class="bg-gradient-to-r from-brand-600 to-fuchsia-500 bg-clip-text text-transparent">Lumpii</span>
-        </h1>
-        <p class="mt-4 text-neutral-400 max-w-2xl">Willkommen auf meinem Web-Blog, hier findest du alles mögliche was ich erstellt und Programmiert habe. Wenn du fragen oder ähnliches hast komm gerne auf meinen Discord.</p>
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a href="#projects" class="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm font-medium hover:bg-white/20 border border-white/10">
-            <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 5 5L20 7"/></svg>
-            Zeig mir die Projekte
-          </a>
-          <a href="#about" class="inline-flex items-center gap-2 rounded-xl bg-white/0 px-4 py-2 text-sm font-medium hover:bg-white/10 border border-white/10">
-            Über mich
-          </a>
+
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-10 sm:pt-14 sm:pb-14 lg:pt-16 lg:pb-16">
+      <div class="max-w-4xl">
+        <div class="rounded-xl border border-editor-border bg-editor-surface/80 backdrop-blur overflow-hidden shadow-lg shadow-black/30 mb-8">
+          <div class="flex items-center gap-2 px-4 py-2.5 bg-editor-panel border-b border-editor-border">
+            <span class="size-3 rounded-full bg-syntax-red/80"></span>
+            <span class="size-3 rounded-full bg-syntax-orange/80"></span>
+            <span class="size-3 rounded-full bg-syntax-green/80"></span>
+            <span class="ml-3 text-xs font-mono text-syntax-comment">lumpii@lab:~</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <div class="text-syntax-comment">// Willkommen</div>
+            <div class="mt-1">
+              <span class="text-syntax-pink">const</span>
+              <span class="text-syntax-text"> developer</span>
+              <span class="text-syntax-red"> =</span>
+              <span class="text-syntax-orange"> {</span>
+            </div>
+            <div class="pl-6">
+              <span class="text-syntax-cyan">name</span><span class="text-syntax-text">:</span>
+              <span class="text-syntax-green"> "Lumpii"</span><span class="text-syntax-text">,</span>
+            </div>
+            <div class="pl-6">
+              <span class="text-syntax-cyan">focus</span><span class="text-syntax-text">:</span>
+              <span class="text-syntax-green"> ["Web", "UIs", "Tools", "FiveM"]</span><span class="text-syntax-text">,</span>
+            </div>
+            <div class="pl-6">
+              <span class="text-syntax-cyan">open_source</span><span class="text-syntax-text">:</span>
+              <span class="text-syntax-purple"> true</span>
+            </div>
+            <div><span class="text-syntax-orange">}</span><span class="text-syntax-text">;</span></div>
+            <div class="mt-3 text-syntax-comment cursor-blink">$ exploring projects...</div>
+          </div>
         </div>
       </div>
     </div>
   </section>
-  
 
-  <section class="border-y border-white/5 bg-base-800/60">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-      <div class="flex flex-col lg:flex-row gap-4 lg:items-center">
+  <section class="border-y border-editor-border bg-editor-surface/50 backdrop-blur-sm sticky top-14 z-30">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+      <div class="flex flex-col lg:flex-row gap-3 lg:items-center">
         <div class="relative flex-1">
-          <input id="search" type="search" placeholder="Suchen nach Titel, Tags …" class="w-full rounded-xl bg-base-700/70 border border-white/10 px-4 py-2.5 pr-10 text-sm placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-brand-600/60" />
-          <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-5 text-neutral-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-syntax-comment font-mono text-xs select-none">&gt;</span>
+          <input id="search" type="search" placeholder="suche nach titel, tags ..."
+                 class="w-full rounded-lg bg-editor-bg border border-editor-border pl-8 pr-4 py-2 text-sm font-mono placeholder:text-syntax-comment/50 text-syntax-text focus:outline-none focus:ring-1 focus:ring-syntax-green/50 focus:border-syntax-green/40" />
         </div>
         <div class="flex gap-2 overflow-x-auto no-scrollbar">
-          <button data-tag="all" class="tag-btn px-3 py-2 text-sm rounded-xl border border-white/10 bg-white/5">Alle</button>
-          <button data-tag="web" class="tag-btn px-3 py-2 text-sm rounded-xl border border-white/10 hover:bg-white/5">Web</button>
-          <button data-tag="discord" class="tag-btn px-3 py-2 text-sm rounded-xl border border-white/10 hover:bg-white/5">Discord</button>
-          <button data-tag="ui" class="tag-btn px-3 py-2 text-sm rounded-xl border border-white/10 hover:bg-white/5">UI</button>
-          <button data-tag="tool" class="tag-btn px-3 py-2 text-sm rounded-xl border border-white/10 hover:bg-white/5">Tool</button>
+          <button data-tag="all" class="tag-btn active px-3 py-1.5 text-xs font-mono rounded-lg border border-editor-border bg-editor-bg transition-all">*</button>
+          <button data-tag="web" class="tag-btn px-3 py-1.5 text-xs font-mono rounded-lg border border-editor-border bg-editor-bg text-syntax-comment hover:text-syntax-text transition-all">web</button>
+          <button data-tag="discord" class="tag-btn px-3 py-1.5 text-xs font-mono rounded-lg border border-editor-border bg-editor-bg text-syntax-comment hover:text-syntax-text transition-all">discord</button>
+          <button data-tag="ui" class="tag-btn px-3 py-1.5 text-xs font-mono rounded-lg border border-editor-border bg-editor-bg text-syntax-comment hover:text-syntax-text transition-all">ui</button>
+          <button data-tag="tool" class="tag-btn px-3 py-1.5 text-xs font-mono rounded-lg border border-editor-border bg-editor-bg text-syntax-comment hover:text-syntax-text transition-all">tool</button>
         </div>
-        <div>
-          <label class="sr-only" for="sort">Sortierung</label>
-          <select id="sort" class="rounded-xl bg-base-700/70 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-600/60">
-            <option value="updated">Neueste zuerst</option>
-            <option value="alpha">A–Z</option>
-          </select>
-        </div>
+        <select id="sort" class="rounded-lg bg-editor-bg border border-editor-border px-3 py-2 text-xs font-mono text-syntax-comment focus:outline-none focus:ring-1 focus:ring-syntax-green/50">
+          <option value="updated">// neueste zuerst</option>
+          <option value="alpha">// A–Z</option>
+        </select>
       </div>
     </div>
   </section>
 
-  <main id="projects" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-    <div id="grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
-    <div id="empty" class="hidden text-neutral-400 text-center py-12">Keine passenden Projekte gefunden.</div>
-    <div id="imgPreviewOverlay" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center hidden cursor-zoom-out">
-      <img id="imgPreview" src="" alt="Vorschau" class="max-h-[90vh] max-w-[90vw] rounded-xl shadow-glow border border-white/10" />
+  <main id="projects" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex items-center gap-3 mb-8">
+      <div class="size-2 rounded-full bg-syntax-green animate-pulse"></div>
+      <h2 class="font-mono text-lg text-syntax-comment"><span class="text-syntax-pink">export</span> <span class="text-syntax-cyan">projects</span> <span class="text-syntax-red">=</span> [</h2>
+    </div>
+    <div id="grid" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
+    <div class="mt-4 font-mono text-lg text-syntax-comment">];</div>
+    <div id="empty" class="hidden text-syntax-comment text-center py-16 font-mono">
+      <div class="text-4xl mb-3">&#x2205;</div>
+      // keine passenden projekte gefunden
+    </div>
+
+    <div id="imgPreviewOverlay" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center hidden cursor-zoom-out">
+      <img id="imgPreview" src="" alt="Vorschau" class="max-h-[90vh] max-w-[90vw] rounded-xl border border-editor-border shadow-2xl" />
     </div>
   </main>
 
-<section id="about" class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 border-t border-white/5">
-  <div class="grid md:grid-cols-3 gap-10 items-start">
-    <div class="md:col-span-2">
-      <h2 class="text-2xl font-bold mb-3">Über Lumpii</h2>
-      <p class="text-neutral-400">
-        Ich bin Entwickler mit Fokus auf moderne UIs, Web-Apps und maßgeschneiderte Scripts 
-        für FiveM und Discord. Meine Projekte verbinden Performance mit klarem, intuitivem 
-        Design – immer mit Blick auf die beste User- und Developer-Experience. 
-        Neben eigenen Tools teile ich vieles als Open Source und baue aktiv an Community-Projekten.
-      </p>
-      <div class="mt-6 grid sm:grid-cols-2 gap-3 text-sm text-neutral-300">
-        <div class="mb-4">
-          <div class="flex justify-between mb-1">
-            <span>UI & Tools</span>
-            <span>85%</span>
+  <section id="about" class="border-t border-editor-border">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid lg:grid-cols-5 gap-10 items-start">
+        <div class="lg:col-span-3">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="size-2 rounded-full bg-syntax-cyan"></div>
+            <h2 class="font-mono text-lg"><span class="text-syntax-pink">class</span> <span class="text-syntax-orange">About</span> {</h2>
           </div>
-          <div class="w-full bg-base-700 rounded-full h-2">
-            <div class="bg-brand-600 h-2 rounded-full" style="width: 85%"></div>
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="flex justify-between mb-1">
-            <span>HTML, JS & Tailwind</span>
-            <span>90%</span>
-          </div>
-          <div class="w-full bg-base-700 rounded-full h-2">
-            <div class="bg-brand-600 h-2 rounded-full" style="width: 90%"></div>
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="flex justify-between mb-1">
-            <span>Lua</span>
-            <span>95%</span>
-          </div>
-          <div class="w-full bg-base-700 rounded-full h-2">
-            <div class="bg-brand-600 h-2 rounded-full" style="width: 95%"></div>
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="flex justify-between mb-1">
-            <span>Python</span>
-            <span>90%</span>
-          </div>
-          <div class="w-full bg-base-700 rounded-full h-2">
-            <div class="bg-brand-600 h-2 rounded-full" style="width: 90%"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="bg-base-800/60 border border-white/10 rounded-2xl p-5">
-      <h3 class="font-semibold mb-2">Quick Links</h3>
-      <div class="flex flex-col gap-2 text-sm">
-        <a class="hover:underline text-neutral-300" href="https://github.com/lumpiis-lab" target="_blank" rel="noopener">GitHub Profil</a>
-        <a class="hover:underline text-neutral-300" href="#projects">Projekte</a>
-        <a class="hover:underline text-neutral-300" href="#contact">Kontakt</a>
-      </div>
-    </div>
-  </div>
-</section>
+          <p class="text-syntax-comment leading-relaxed ml-6 mb-6">
+            Ich bin Entwickler mit Fokus auf moderne UIs, Web-Apps und maßgeschneiderte Scripts
+            für FiveM und Discord. Meine Projekte verbinden Performance mit klarem, intuitivem
+            Design – immer mit Blick auf die beste User- und Developer-Experience.
+            Neben eigenen Tools teile ich vieles als Open Source und baue aktiv an Community-Projekten.
+          </p>
 
-  <section id="services" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 border-t border-white/5">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold mb-4">Meine Arbeit</h2>
-      <p class="text-neutral-400 mb-6">Schwerpunkte meiner Arbeit — von modernen Web-UIs bis hin zu Tools und Integrationen für Communities.</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="rounded-2xl bg-base-800/60 border border-white/10 p-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-brand-600/20">
-          <div class="flex items-center gap-3">
-            <div class="size-10 rounded-full flex-shrink-0 bg-brand-600/20 flex items-center justify-center text-brand-400"><i class="fas fa-globe"></i></div>
+          <div class="ml-6 space-y-4">
             <div>
-              <div class="font-semibold">Web & Frontend</div>
-              <div class="text-sm text-neutral-400">Schnelle, responsive Websites mit sauberem Code und klarer UX.</div>
+              <div class="flex justify-between mb-1.5 font-mono text-xs">
+                <span class="text-syntax-cyan">ui_tools</span>
+                <span class="text-syntax-green">85<span class="text-syntax-comment">%</span></span>
+              </div>
+              <div class="w-full bg-editor-panel rounded-full h-1.5 overflow-hidden">
+                <div class="skill-fill bg-gradient-to-r from-syntax-cyan to-syntax-green h-full rounded-full" style="--w:85%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1.5 font-mono text-xs">
+                <span class="text-syntax-cyan">html_js_tailwind</span>
+                <span class="text-syntax-green">90<span class="text-syntax-comment">%</span></span>
+              </div>
+              <div class="w-full bg-editor-panel rounded-full h-1.5 overflow-hidden">
+                <div class="skill-fill bg-gradient-to-r from-syntax-orange to-syntax-pink h-full rounded-full" style="--w:90%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1.5 font-mono text-xs">
+                <span class="text-syntax-cyan">lua</span>
+                <span class="text-syntax-green">95<span class="text-syntax-comment">%</span></span>
+              </div>
+              <div class="w-full bg-editor-panel rounded-full h-1.5 overflow-hidden">
+                <div class="skill-fill bg-gradient-to-r from-syntax-purple to-syntax-cyan h-full rounded-full" style="--w:95%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1.5 font-mono text-xs">
+                <span class="text-syntax-cyan">python</span>
+                <span class="text-syntax-green">90<span class="text-syntax-comment">%</span></span>
+              </div>
+              <div class="w-full bg-editor-panel rounded-full h-1.5 overflow-hidden">
+                <div class="skill-fill bg-gradient-to-r from-syntax-green to-syntax-cyan h-full rounded-full" style="--w:90%"></div>
+              </div>
             </div>
           </div>
+          <div class="font-mono text-lg text-syntax-comment mt-6">}</div>
         </div>
-        <div class="rounded-2xl bg-base-800/60 border border-white/10 p-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-brand-600/20">
-          <div class="flex items-center gap-3">
-            <div class="size-10 rounded-full flex-shrink-0 bg-brand-600/20 flex items-center justify-center text-brand-400"><i class="fab fa-discord"></i></div>
-            <div>
-              <div class="font-semibold">FiveM & Discord</div>
-              <div class="text-sm text-neutral-400">Scripts, Bots und Integrationen für Server- und Community-Workflows.</div>
+
+        <div class="lg:col-span-2 space-y-5">
+          <div class="rounded-xl bg-editor-surface border border-editor-border p-5">
+            <div class="font-mono text-xs text-syntax-comment mb-3">// quick_links</div>
+            <div class="flex flex-col gap-2.5 text-sm font-mono">
+              <a class="text-syntax-cyan hover:text-syntax-green transition-colors flex items-center gap-2" href="https://github.com/lumpiis-lab" target="_blank" rel="noopener">
+                <i class="fab fa-github text-syntax-comment"></i> github/lumpiis-lab
+              </a>
+              <a class="text-syntax-cyan hover:text-syntax-green transition-colors flex items-center gap-2" href="#projects">
+                <i class="fas fa-folder text-syntax-comment"></i> ./projects
+              </a>
+              <a class="text-syntax-cyan hover:text-syntax-green transition-colors flex items-center gap-2" href="#contact">
+                <i class="fas fa-envelope text-syntax-comment"></i> ./contact
+              </a>
             </div>
           </div>
-        </div>
-        <div class="rounded-2xl bg-base-800/60 border border-white/10 p-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-brand-600/20">
-          <div class="flex items-center gap-3">
-            <div class="size-10 rounded-full flex-shrink-0 bg-brand-600/20 flex items-center justify-center text-brand-400"><i class="fas fa-paint-brush"></i></div>
-            <div>
-              <div class="font-semibold">UI & Tools</div>
-              <div class="text-sm text-neutral-400">Designsysteme, Dashboards und nützliche Tools für Entwickler und Creator.</div>
+
+          <div class="rounded-xl bg-editor-surface border border-editor-border p-5">
+            <div class="font-mono text-xs text-syntax-comment mb-3">// tech_stack</div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-md bg-editor-panel border border-editor-border text-xs font-mono text-syntax-orange">HTML</span>
+              <span class="px-2.5 py-1 rounded-md bg-editor-panel border border-editor-border text-xs font-mono text-syntax-orange">CSS</span>
+              <span class="px-2.5 py-1 rounded-md bg-editor-panel border border-editor-border text-xs font-mono text-syntax-orange">JavaScript</span>
+              <span class="px-2.5 py-1 rounded-md bg-editor-panel border border-editor-border text-xs font-mono text-syntax-purple">Lua</span>
+              <span class="px-2.5 py-1 rounded-md bg-editor-panel border border-editor-border text-xs font-mono text-syntax-green">Python</span>
+              <span class="px-2.5 py-1 rounded-md bg-editor-panel border border-editor-border text-xs font-mono text-syntax-cyan">Tailwind</span>
+              <span class="px-2.5 py-1 rounded-md bg-editor-panel border border-editor-border text-xs font-mono text-syntax-pink">Node.js</span>
             </div>
           </div>
         </div>
@@ -259,131 +340,208 @@
     </div>
   </section>
 
-  <section id="partners" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 border-t border-white/5">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold mb-4">Partner & Kooperationen</h2>
-      <p class="text-neutral-400 mb-6">Hier findest du meine Kooperationspartner und Teampartner, mit denen ich zusammenarbeite.</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="rounded-2xl bg-base-800/60 border border-white/10 p-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-brand-600/20 flex items-center gap-4">
-          <img src="img/scubel.png" alt="R4XZ Logo" class="size-12 rounded-lg object-cover bg-base-700 border border-white/10">
-          <div class="flex-1">
-            <div class="font-semibold">R4XZ</div>
-            <div class="text-sm text-neutral-400">Teammitglied ScubeScripts</div>
-            <a href="https://www.twitch.tv/noxxixz" target="_blank" rel="noopener" class="text-sm text-brand-400 hover:underline">Besuchen</a>
+  <section id="services" class="border-t border-editor-border">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="size-2 rounded-full bg-syntax-orange"></div>
+        <h2 class="font-mono text-lg"><span class="text-syntax-pink">function</span> <span class="text-syntax-orange">getServices</span><span class="text-syntax-text">()</span> {</h2>
+      </div>
+      <p class="text-syntax-comment ml-6 mb-8">// Schwerpunkte meiner Arbeit</p>
+
+      <div class="grid md:grid-cols-3 gap-5 ml-6">
+        <div class="editor-card rounded-xl bg-editor-surface border border-editor-border p-5 hover-lift">
+          <div class="size-11 rounded-lg bg-syntax-cyan/10 border border-syntax-cyan/20 flex items-center justify-center mb-4">
+            <i class="fas fa-globe text-syntax-cyan"></i>
+          </div>
+          <h3 class="font-semibold text-syntax-text mb-1.5">Web & Frontend</h3>
+          <p class="text-sm text-syntax-comment leading-relaxed">Schnelle, responsive Websites mit sauberem Code und klarer UX.</p>
+        </div>
+        <div class="editor-card rounded-xl bg-editor-surface border border-editor-border p-5 hover-lift">
+          <div class="size-11 rounded-lg bg-syntax-purple/10 border border-syntax-purple/20 flex items-center justify-center mb-4">
+            <i class="fab fa-discord text-syntax-purple"></i>
+          </div>
+          <h3 class="font-semibold text-syntax-text mb-1.5">FiveM & Discord</h3>
+          <p class="text-sm text-syntax-comment leading-relaxed">Scripts, Bots und Integrationen für Server- und Community-Workflows.</p>
+        </div>
+        <div class="editor-card rounded-xl bg-editor-surface border border-editor-border p-5 hover-lift">
+          <div class="size-11 rounded-lg bg-syntax-green/10 border border-syntax-green/20 flex items-center justify-center mb-4">
+            <i class="fas fa-tools text-syntax-green"></i>
+          </div>
+          <h3 class="font-semibold text-syntax-text mb-1.5">UI & Tools</h3>
+          <p class="text-sm text-syntax-comment leading-relaxed">Designsysteme, Dashboards und nützliche Tools für Entwickler und Creator.</p>
+        </div>
+      </div>
+      <div class="font-mono text-lg text-syntax-comment mt-6">}</div>
+    </div>
+  </section>
+
+  <section id="partners" class="border-t border-editor-border">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="size-2 rounded-full bg-syntax-purple"></div>
+        <h2 class="font-mono text-lg"><span class="text-syntax-pink">const</span> <span class="text-syntax-cyan">partners</span> <span class="text-syntax-red">=</span> [</h2>
+      </div>
+      <p class="text-syntax-comment ml-6 mb-8">// Kooperationspartner & Teammitglieder</p>
+
+      <div class="grid md:grid-cols-3 gap-5 ml-6">
+        <div class="editor-card rounded-xl bg-editor-surface border border-editor-border p-4 hover-lift flex items-center gap-4">
+          <img src="img/scubel.png" alt="R4XZ" class="size-12 rounded-lg object-cover bg-editor-panel border border-editor-border flex-shrink-0">
+          <div class="min-w-0">
+            <div class="font-semibold text-syntax-text truncate">R4XZ</div>
+            <div class="text-xs font-mono text-syntax-comment">Teammitglied ScubeScripts</div>
+            <a href="https://www.twitch.tv/noxxixz" target="_blank" rel="noopener" class="text-xs font-mono text-syntax-cyan hover:text-syntax-green transition-colors">twitch &rarr;</a>
           </div>
         </div>
-        <div class="rounded-2xl bg-base-800/60 border border-white/10 p-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-brand-600/20 flex items-center gap-4">
-          <img src="img/shiroo.png" alt="ShiroTastisch Logo" class="size-12 rounded-lg object-cover bg-base-700 border border-white/10">
-          <div class="flex-1">
-            <div class="font-semibold">ShiroTastisch</div>
-            <div class="text-sm text-neutral-400">Kooperationspartner</div>
-            <a href="https://twitter.com/ShiroTastisch" target="_blank" rel="noopener" class="text-sm text-brand-400 hover:underline">Besuchen</a>
+        <div class="editor-card rounded-xl bg-editor-surface border border-editor-border p-4 hover-lift flex items-center gap-4">
+          <img src="img/shiroo.png" alt="ShiroTastisch" class="size-12 rounded-lg object-cover bg-editor-panel border border-editor-border flex-shrink-0">
+          <div class="min-w-0">
+            <div class="font-semibold text-syntax-text truncate">ShiroTastisch</div>
+            <div class="text-xs font-mono text-syntax-comment">Kooperationspartner</div>
+            <a href="https://twitter.com/ShiroTastisch" target="_blank" rel="noopener" class="text-xs font-mono text-syntax-cyan hover:text-syntax-green transition-colors">twitter &rarr;</a>
           </div>
         </div>
-        <div class="rounded-2xl bg-base-800/60 border border-white/10 p-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-brand-600/20 flex items-center gap-4">
-          <img src="img/flamer.png" alt="Flamerbox Logo" class="size-12 rounded-lg object-cover bg-base-700 border border-white/10">
-          <div class="flex-1">
-            <div class="font-semibold">Flamerbox</div>
-            <div class="text-sm text-neutral-400">Kooperationspartner</div>
-            <a href="https://twitch.tv/flamerbox" target="_blank" rel="noopener" class="text-sm text-brand-400 hover:underline">Besuchen</a>
+        <div class="editor-card rounded-xl bg-editor-surface border border-editor-border p-4 hover-lift flex items-center gap-4">
+          <img src="img/flamer.png" alt="Flamerbox" class="size-12 rounded-lg object-cover bg-editor-panel border border-editor-border flex-shrink-0">
+          <div class="min-w-0">
+            <div class="font-semibold text-syntax-text truncate">Flamerbox</div>
+            <div class="text-xs font-mono text-syntax-comment">Kooperationspartner</div>
+            <a href="https://twitch.tv/flamerbox" target="_blank" rel="noopener" class="text-xs font-mono text-syntax-cyan hover:text-syntax-green transition-colors">twitch &rarr;</a>
+          </div>
+        </div>
+      </div>
+      <div class="font-mono text-lg text-syntax-comment mt-6">];</div>
+    </div>
+  </section>
+
+  <section id="work-slider" class="border-t border-editor-border">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="size-2 rounded-full bg-syntax-pink"></div>
+        <h2 class="font-mono text-lg"><span class="text-syntax-comment">// </span><span class="text-syntax-text">Noch mehr von mir</span></h2>
+      </div>
+      <div id="workSliderWrap" class="relative">
+        <div id="workSlider" class="flex gap-4 overflow-x-auto no-scrollbar py-2 px-1"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" class="border-t border-editor-border">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="size-2 rounded-full bg-syntax-green"></div>
+        <h2 class="font-mono text-lg"><span class="text-syntax-pink">const</span> <span class="text-syntax-cyan">reviews</span> <span class="text-syntax-red">=</span> [</h2>
+      </div>
+
+      <div class="mt-8 grid md:grid-cols-2 gap-5">
+        <div class="editor-card rounded-xl bg-editor-surface border border-editor-border p-5 hover-lift">
+          <div class="flex items-start gap-1 mb-3">
+            <span class="text-syntax-orange text-xs">★★★★★</span>
+          </div>
+          <p class="text-sm text-syntax-comment leading-relaxed mb-4 italic">
+            "Ich hatte vor, irgendwann neue Streaming-Overlays zu kaufen. Dann habe ich von Lumpii neue bekommen und bin mehr als zufrieden. Danke, Lumpii."
+          </p>
+          <div class="flex items-center gap-3 pt-3 border-t border-editor-border">
+            <img src="img/dracocat.png" alt="DracoCat" class="size-9 rounded-full object-cover bg-editor-panel border border-editor-border">
+            <div>
+              <div class="font-semibold text-sm text-syntax-text">DracoCat</div>
+              <div class="text-xs font-mono text-syntax-comment">Creator</div>
+            </div>
+          </div>
+        </div>
+        <div class="editor-card rounded-xl bg-editor-surface border border-editor-border p-5 hover-lift">
+          <div class="flex items-start gap-1 mb-3">
+            <span class="text-syntax-orange text-xs">★★★★★</span>
+          </div>
+          <p class="text-sm text-syntax-comment leading-relaxed mb-4 italic">
+            "Lumpii hat für mich verschiedene Discord-Bots und einige Streaming-Overlays erstellt. Ich bin mehr als zufrieden damit und empfehle ihn gerne weiter. Tolle Arbeit, vielen Dank!"
+          </p>
+          <div class="flex items-center gap-3 pt-3 border-t border-editor-border">
+            <img src="img/shiroo.png" alt="ShiroTastisch" class="size-9 rounded-full object-cover bg-editor-panel border border-editor-border">
+            <div>
+              <div class="font-semibold text-sm text-syntax-text">ShiroTastisch</div>
+              <div class="text-xs font-mono text-syntax-comment">Creator</div>
+            </div>
+          </div>
+        </div>
+        <div class="editor-card rounded-xl bg-editor-surface border border-editor-border p-5 hover-lift">
+          <div class="flex items-start gap-1 mb-3">
+            <span class="text-syntax-orange text-xs">★★★★★</span>
+          </div>
+          <p class="text-sm text-syntax-comment leading-relaxed mb-4 italic">
+            "Völlig überwältigt von den Overlays! Sie fangen meinen Style perfekt ein und machen meinen Stream so viel professioneller. Danke für deine Mühe und dein großes Talent!"
+          </p>
+          <div class="flex items-center gap-3 pt-3 border-t border-editor-border">
+            <img src="img/flamer.png" alt="Flamerbox" class="size-9 rounded-full object-cover bg-editor-panel border border-editor-border">
+            <div>
+              <div class="font-semibold text-sm text-syntax-text">Flamerbox</div>
+              <div class="text-xs font-mono text-syntax-comment">Creator</div>
+            </div>
+          </div>
+        </div>
+        <div class="editor-card rounded-xl bg-editor-surface border border-editor-border p-5 hover-lift">
+          <div class="flex items-start gap-1 mb-3">
+            <span class="text-syntax-orange text-xs">★★★★★</span>
+          </div>
+          <p class="text-sm text-syntax-comment leading-relaxed mb-4 italic">
+            "Vielen Dank für deine unverzichtbare Arbeit! Deine tadellose Serververwaltung und deine innovativen Projektideen haben unsere Community enorm bereichert."
+          </p>
+          <div class="flex items-center gap-3 pt-3 border-t border-editor-border">
+            <img src="img/neverland.png" alt="Neverland" class="size-9 rounded-full object-cover bg-editor-panel border border-editor-border">
+            <div>
+              <div class="font-semibold text-sm text-syntax-text">Neverland</div>
+              <div class="text-xs font-mono text-syntax-comment">Minecraft-Community</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="font-mono text-lg text-syntax-comment mt-6">];</div>
+    </div>
+  </section>
+
+  <section id="contact" class="border-t border-editor-border">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16">
+      <div class="rounded-xl bg-editor-surface border border-editor-border overflow-hidden">
+        <div class="flex items-center gap-2 px-5 py-3 bg-editor-panel border-b border-editor-border">
+          <span class="size-3 rounded-full bg-syntax-red/80"></span>
+          <span class="size-3 rounded-full bg-syntax-orange/80"></span>
+          <span class="size-3 rounded-full bg-syntax-green/80"></span>
+          <span class="ml-3 text-xs font-mono text-syntax-comment">contact.md</span>
+        </div>
+        <div class="p-6 sm:p-8">
+          <h2 class="text-2xl font-bold text-syntax-text mb-2">Kontakt</h2>
+          <p class="text-syntax-comment leading-relaxed mb-6">
+            Ob Zusammenarbeit, individuelles Design oder einfach nur ein Austausch über Ideen –
+            schreib mir gerne direkt.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="https://discord.gg/5gKAtJFUD9" target="_blank" rel="noopener"
+               class="social-link social-discord inline-flex items-center gap-2 rounded-lg bg-editor-bg px-5 py-2.5 text-sm font-medium border border-editor-border text-syntax-comment hover:text-white transition-all">
+              <i class="fab fa-discord"></i> Discord beitreten
+            </a>
+            <a href="https://github.com/lumpiis-lab" target="_blank" rel="noopener"
+               class="social-link social-github inline-flex items-center gap-2 rounded-lg bg-editor-bg px-5 py-2.5 text-sm font-medium border border-editor-border text-syntax-comment hover:text-white transition-all">
+              <i class="fab fa-github"></i> GitHub ansehen
+            </a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="work-slider" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 border-t border-white/5">
-    <div class="mb-4">
-      <h2 class="text-2xl font-bold">Noch mehr von mir:</h2>
-    </div>
-
-    <div id="workSliderWrap" class="relative">
-      <div id="workSlider" class="flex gap-4 overflow-x-auto no-scrollbar py-2 px-1">
-      </div>
-    </div>
-  </section>
-
- <section id="testimonials" class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 border-t border-white/5">
-    <h2 class="text-2xl font-bold mb-3">Bewertungen</h2>
-    <div class="space-y-8">
-      <div class="p-6 rounded-2xl bg-base-800/60 border border-white/10">
-        <p class="text-neutral-400 mb-4">
-          "Ich hatte vor, irgendwann neue Streaming-Overlays zu kaufen. Dann habe ich von Lumpii neue bekommen und bin mehr als zufrieden. Danke, Lumpii."
-        </p>
-        <div class="flex items-center gap-3">
-          <img src="img/dracocat.png" alt="DracoCat Profilbild" class="size-10 rounded-full object-cover bg-base-700 border border-white/10">
-          <div>
-            <div class="font-semibold">DracoCat</div>
-            <div class="text-sm text-neutral-500">Creator</div>
-          </div>
+  <footer class="border-t border-editor-border bg-editor-surface/30">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-syntax-comment">
+        <div>
+          <span class="text-syntax-comment">// </span>
+          <span class="text-syntax-text">&copy; <span id="y"></span> lumpii.lab</span>
         </div>
-      </div>
-      <div class="p-6 rounded-2xl bg-base-800/60 border border-white/10">
-        <p class="text-neutral-400 mb-4">
-          "Lumpii hat für mich verschiedene Discord-Bots und einige Streaming-Overlays erstellt. Ich bin mehr als zufrieden damit und empfehle ihn gerne weiter. Tolle Arbeit, vielen Dank!
-        </p>
-        <div class="flex items-center gap-3">
-          <img src="img/shiroo.png" alt="ShiroTastisch Profilbild" class="size-10 rounded-full object-cover bg-base-700 border border-white/10">
-          <div>
-            <div class="font-semibold">ShiroTastisch</div>
-            <div class="text-sm text-neutral-500">Creator</div>
-          </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="https://docs.github.com/en/site-policy/github-terms/github-terms-of-service" target="_blank" rel="noopener" class="hover:text-syntax-cyan transition-colors">terms</a>
+          <span class="text-editor-border">|</span>
+          <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener" class="hover:text-syntax-cyan transition-colors">privacy</a>
+          <span class="text-editor-border">|</span>
+          <a href="https://github.com/security" target="_blank" rel="noopener" class="hover:text-syntax-cyan transition-colors">security</a>
         </div>
-      </div>
-      <div class="p-6 rounded-2xl bg-base-800/60 border border-white/10">
-        <p class="text-neutral-400 mb-4">
-          "Völlig überwältigt von den Overlays! Sie fangen meinen Style perfekt ein und machen meinen Stream so viel professioneller. Danke für deine Mühe und dein großes Talent – das ist genau das, was ich mir vorgestellt habe!"
-        </p>
-        <div class="flex items-center gap-3">
-          <img src="img/flamer.png" alt="Flamerbox Profilbild" class="size-10 rounded-full object-cover bg-base-700 border border-white/10">
-          <div>
-            <div class="font-semibold">Flamerbox</div>
-            <div class="text-sm text-neutral-500">Creator</div>
-          </div>
-        </div>
-      </div>
-      <div class="p-6 rounded-2xl bg-base-800/60 border border-white/10">
-        <p class="text-neutral-400 mb-4">
-          "Vielen Dank für deine unverzichtbare Arbeit! Deine tadellose Serververwaltung und deine innovativen Projektideen haben unsere Community enorm bereichert."
-        </p>
-        <div class="flex items-center gap-3">
-          <img src="img/neverland.png" alt="Neverland Profilbild" class="size-10 rounded-full object-cover bg-base-700 border border-white/10">
-          <div>
-            <div class="font-semibold">Neverland</div>
-            <div class="text-sm text-neutral-500">Minecraft-Community</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-<section id="contact" class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 border-t border-white/5">
-  <h2 class="text-2xl font-bold mb-3">Kontakt</h2>
-  <p class="text-neutral-400">
-    Ob Zusammenarbeit, individuelles Design oder einfach nur ein Austausch über Ideen – 
-    schreib mir gerne direkt.
-  </p>
-  <div class="mt-4 flex flex-wrap gap-3">
-    <a href="https://discord.gg/5gKAtJFUD9" target="_blank" rel="noopener"
-       class="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm font-medium hover:bg-white/20 border border-white/10 discord-icon-link">
-      <i class="fab fa-discord"></i> Discord
-    </a>
-    <a href="https://github.com/lumpiis-lab" target="_blank" rel="noopener"
-       class="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm font-medium hover:bg-white/20 border border-white/10 github-icon-link">
-      <i class="fab fa-github"></i> GitHub
-    </a>
-  </div>
-</section>
-
-  <footer class="border-t border-white/5">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 text-sm text-neutral-500 flex flex-col items-center gap-4">
-      <div>© <span id="y"></span> Lumpii's Lab</div>
-      <div class="flex flex-wrap items-center justify-center gap-2">
-        <a href="https://docs.github.com/en/site-policy/github-terms/github-terms-of-service" target="_blank" rel="noopener" class="hover:underline">Terms of Service</a>
-        <span>|</span>
-        <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener" class="hover:underline">Privacy</a>
-        <span>|</span>
-        <a href="https://github.com/security" target="_blank" rel="noopener" class="hover:underline">Security</a>
       </div>
     </div>
   </footer>
@@ -393,15 +551,13 @@
     if (workSlider) {
       setInterval(() => {
         if (workSlider.scrollLeft >= workSlider.scrollWidth - workSlider.clientWidth) {
-          workSlider.scrollLeft = 0; // Reset to start for endless loop
+          workSlider.scrollLeft = 0;
         } else {
-          workSlider.scrollLeft += 1; // Slow scroll by 1px
+          workSlider.scrollLeft += 1;
         }
-      }, 50); // Adjust interval for speed (lower = faster)
+      }, 40);
     }
   </script>
   <script src="script.js"></script>
- </body>
+</body>
 </html>
-
-

@@ -1,3 +1,3 @@
 ## Lumpii404.github.io
 
-<img width="2560" height="1440" alt="Screenshot 2025-12-02 162749" src="https://github.com/user-attachments/assets/071c0567-c6f4-4651-a66e-607cb51c5eda" />
+<img width="1920" height="1080" alt="Screenshot 2026-03-28 212335" src="https://github.com/user-attachments/assets/75cb6494-5b98-4372-94c4-98a895a035ec" />

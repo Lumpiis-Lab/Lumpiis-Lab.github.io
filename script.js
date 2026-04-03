@@ -54,7 +54,7 @@ const PROJECTS = [
     title: 'Member-Portal',
     description: 'Ein einfaches Mitgliederportal für Creator. Sie können exklusive Inhalte für ihre Streams herunterladen.',
     tags: ['ui', 'web', 'tool'],
-    updatedAt: '2025-09-09',
+    updatedAt: '2026-04-03',
     github: '',
     demo: '',
     image: 'img/member-portal.png'
